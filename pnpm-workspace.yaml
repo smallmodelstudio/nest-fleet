@@ -1,0 +1,9 @@
+packages:
+  - 'packages/*'
+  - 'sandbox'
+allowBuilds:
+  # Downloads swc's platform-specific native binary; needed for the vitest
+  # swc plugin to work at all.
+  '@swc/core': true
+minimumReleaseAgeExclude:
+  - '@nestjs/schematics@12.0.4'
