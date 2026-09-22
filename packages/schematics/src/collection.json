@@ -7,6 +7,18 @@
       "factory": "./team-service/index#teamService",
       "description": "Generate a service with a Logger already set up.",
       "schema": "./team-service/schema.json"
+    },
+    "controller": {
+      "aliases": ["co"],
+      "factory": "./controller/index#teamController",
+      "description": "Create a Nest controller, with the spec always on and a Logger added.",
+      "schema": "./controller/schema.json"
+    },
+    "service": {
+      "aliases": ["s"],
+      "factory": "./service/index#teamServiceOverride",
+      "description": "Create a Nest service, with the spec always on and a Logger added.",
+      "schema": "./service/schema.json"
     }
   }
 }
