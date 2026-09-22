@@ -1,0 +1,13 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "$id": "MigrateToV2Schematic",
+  "title": "Migrate to V2 Options Schema",
+  "type": "object",
+  "properties": {
+    "path": {
+      "type": "string",
+      "format": "path",
+      "description": "The path to migrate. Defaults to the project's src directory."
+    }
+  }
+}

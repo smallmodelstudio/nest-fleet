@@ -1,0 +1,32 @@
+{
+  "name": "@team/fleet",
+  "version": "0.0.0",
+  "description": "fleet status, fleet doctor and fleet run: manage every repo on the team standard.",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "fleet": "dist/main.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json && chmod +x dist/main.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@angular-devkit/core": "^22.1.8",
+    "@angular-devkit/schematics": "^22.1.8",
+    "commander": "^15.0.0",
+    "rxjs": "^7.8.2"
+  },
+  "devDependencies": {
+    "@team/schematics": "link:../schematics",
+    "@types/node": "24.13.6",
+    "typescript": "^6.0.3"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "$id": "TeamHealthNestAddSchematic",
+  "title": "Team Health nest-add Options Schema",
+  "type": "object",
+  "properties": {
+    "sourceRoot": {
+      "type": "string",
+      "description": "The project's source root. Passed automatically by `nest add`.",
+      "default": "src"
+    }
+  }
+}

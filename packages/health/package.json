@@ -1,7 +1,7 @@
 {
-  "name": "@team/schematics",
+  "name": "@team/health",
   "version": "0.0.0",
-  "description": "House-style schematics collection for nest g and nest new.",
+  "description": "nest add @team/health: installs @nestjs/terminus and wires up a /health endpoint.",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -19,7 +19,6 @@
   "dependencies": {
     "@angular-devkit/core": "^22.1.8",
     "@angular-devkit/schematics": "^22.1.8",
-    "@nestjs/schematics": "^12.0.4",
     "typescript": "^6.0.3"
   },
   "devDependencies": {

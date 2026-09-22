@@ -1,5 +1,34 @@
 {
   "$schema": "../node_modules/@angular-devkit/schematics/collection-schema.json",
   "extends": ["@nestjs/schematics"],
-  "schematics": {}
+  "schematics": {
+    "application": {
+      "factory": "./application/index#teamApplication",
+      "description": "Create a Nest application on our golden path: config presets, Dockerfile, CI workflow and a /health endpoint.",
+      "schema": "./application/schema.json"
+    },
+    "team-service": {
+      "aliases": ["ts"],
+      "factory": "./team-service/index#teamService",
+      "description": "Generate a service with a Logger already set up.",
+      "schema": "./team-service/schema.json"
+    },
+    "controller": {
+      "aliases": ["co"],
+      "factory": "./controller/index#teamController",
+      "description": "Create a Nest controller, with the spec always on and a Logger added.",
+      "schema": "./controller/schema.json"
+    },
+    "service": {
+      "aliases": ["s"],
+      "factory": "./service/index#teamServiceOverride",
+      "description": "Create a Nest service, with the spec always on and a Logger added.",
+      "schema": "./service/schema.json"
+    },
+    "migrate-to-v2": {
+      "factory": "./migrate-to-v2/index#migrateToV2",
+      "description": "Moves every console.log to the Nest Logger. Safe to run more than once.",
+      "schema": "./migrate-to-v2/schema.json"
+    }
+  }
 }
