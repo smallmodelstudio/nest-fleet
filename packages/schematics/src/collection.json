@@ -24,6 +24,11 @@
       "factory": "./service/index#teamServiceOverride",
       "description": "Create a Nest service, with the spec always on and a Logger added.",
       "schema": "./service/schema.json"
+    },
+    "migrate-to-v2": {
+      "factory": "./migrate-to-v2/index#migrateToV2",
+      "description": "Moves every console.log to the Nest Logger. Safe to run more than once.",
+      "schema": "./migrate-to-v2/schema.json"
     }
   }
 }
