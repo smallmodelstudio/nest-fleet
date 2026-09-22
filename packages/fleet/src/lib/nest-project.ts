@@ -28,7 +28,10 @@ export function readNestProject(dir: string): NestProjectInfo {
     nestVersion: packageJson?.dependencies?.['@nestjs/core'],
     collection: nestCliJson?.collection,
     localNestCli: Boolean(packageJson?.devDependencies?.['@nestjs/cli']),
-    teamSchematicsVersion: packageJson?.dependencies?.['@team/schematics'],
+    // The `application` schematic puts @team/schematics in devDependencies (a `file:` link back
+    // to this checkout, since it isn't published yet), so check both.
+    teamSchematicsVersion:
+      packageJson?.dependencies?.['@team/schematics'] ?? packageJson?.devDependencies?.['@team/schematics'],
     specDefaultsEnforced: nestCliJson?.generateOptions?.spec === true,
   };
 }

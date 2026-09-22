@@ -98,6 +98,23 @@ describe('runCommand', () => {
     expect(createPullRequest).not.toHaveBeenCalled();
   }, 30_000);
 
+  it('refuses --apply on a repo with only a local path, instead of failing later at push', async () => {
+    const localOnlyConfig: FleetConfig = {
+      standardsVersion: '0.0.0',
+      repos: [{ name: 'fixture', path: sourceDir, localPath: sourceDir }],
+    };
+
+    const [result] = await runCommand(localOnlyConfig, {
+      schematic: 'team-service',
+      schematicOptions: { name: 'billing' },
+      apply: true,
+    });
+
+    expect(result?.status).toBe('failed');
+    expect(result?.detail).toContain('gitUrl');
+    expect(createPullRequest).not.toHaveBeenCalled();
+  }, 30_000);
+
   it('restricts to the named repos', async () => {
     const results = await runCommand(config, {
       schematic: 'team-service',

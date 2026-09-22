@@ -55,11 +55,16 @@ export function diagnose(repoName: string, info: NestProjectInfo, currentVersion
   };
 }
 
+/** A dependency pointing at a local checkout rather than a registry version. */
+function isLocalReference(declared: string): boolean {
+  return declared.startsWith('link:') || declared.startsWith('workspace:') || declared.startsWith('file:');
+}
+
 function isOnVersion(declared: string | undefined, current: string): boolean {
   if (!declared) {
     return false;
   }
-  if (declared.startsWith('link:') || declared.startsWith('workspace:')) {
+  if (isLocalReference(declared)) {
     return true;
   }
   return declared.replace(/^[\^~]/, '') === current;
@@ -69,7 +74,7 @@ function describeVersion(declared: string | undefined, current: string): string 
   if (!declared) {
     return '@team/schematics is not a dependency';
   }
-  if (declared.startsWith('link:') || declared.startsWith('workspace:')) {
+  if (isLocalReference(declared)) {
     return `linked locally (${declared})`;
   }
   return declared.replace(/^[\^~]/, '') === current

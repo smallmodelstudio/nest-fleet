@@ -56,6 +56,11 @@ async function runOnRepo(repo: ResolvedFleetRepo, options: RunOptions): Promise<
   if (!source) {
     return { repo: repo.name, status: 'failed', detail: 'no "path" or "gitUrl" to clone from' };
   }
+  // A repo without a gitUrl has nowhere for --apply to push a branch to: catch that here rather
+  // than failing later at `git push`, after the schematic has already run and tests have passed.
+  if (options.apply && !repo.gitUrl) {
+    return { repo: repo.name, status: 'failed', detail: '--apply needs a "gitUrl" to push a branch to' };
+  }
 
   const workDir = await mkdtemp(join(tmpdir(), 'fleet-run-'));
   try {

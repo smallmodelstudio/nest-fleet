@@ -41,6 +41,20 @@ describe('readNestProject', () => {
     });
   });
 
+  it('reads @team/schematics out of devDependencies, where the golden-path app puts its file: link', () => {
+    writeFileSync(
+      join(dir, 'package.json'),
+      JSON.stringify({
+        dependencies: { '@nestjs/core': '^12.0.1' },
+        devDependencies: { '@nestjs/cli': '^12.0.0', '@team/schematics': 'file:../../packages/schematics' },
+      }),
+    );
+
+    const info = readNestProject(dir);
+
+    expect(info.teamSchematicsVersion).toBe('file:../../packages/schematics');
+  });
+
   it('tolerates a repo with no nest-cli.json', () => {
     writeFileSync(join(dir, 'package.json'), JSON.stringify({}));
 

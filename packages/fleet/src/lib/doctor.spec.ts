@@ -48,6 +48,16 @@ describe('diagnose', () => {
     expect(report.checks.find((c) => c.name === '@team/schematics version')?.ok).toBe(true);
   });
 
+  it('treats a file: dependency as always current, as the golden-path app generates', () => {
+    const report = diagnose(
+      'demo',
+      { ...compliant, teamSchematicsVersion: 'file:../../packages/schematics' },
+      '1.2.0',
+    );
+
+    expect(report.checks.find((c) => c.name === '@team/schematics version')?.ok).toBe(true);
+  });
+
   it('flags a missing local CLI as an error, not just a warning', () => {
     const report = diagnose('billing', { ...compliant, localNestCli: false }, '1.2.0');
 
