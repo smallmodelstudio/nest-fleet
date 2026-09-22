@@ -2,6 +2,11 @@
   "$schema": "../node_modules/@angular-devkit/schematics/collection-schema.json",
   "extends": ["@nestjs/schematics"],
   "schematics": {
+    "application": {
+      "factory": "./application/index#teamApplication",
+      "description": "Create a Nest application on our golden path: config presets, Dockerfile, CI workflow and a /health endpoint.",
+      "schema": "./application/schema.json"
+    },
     "team-service": {
       "aliases": ["ts"],
       "factory": "./team-service/index#teamService",
