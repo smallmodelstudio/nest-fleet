@@ -1,0 +1,24 @@
+{
+  "name": "@team/routes-plugin",
+  "version": "0.0.0",
+  "description": "nest build compiler plugin: writes routes.json listing every controller route in the project.",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "typescript": "^6.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "24.13.6"
+  }
+}
