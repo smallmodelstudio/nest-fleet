@@ -1,5 +1,12 @@
 {
   "$schema": "../node_modules/@angular-devkit/schematics/collection-schema.json",
   "extends": ["@nestjs/schematics"],
-  "schematics": {}
+  "schematics": {
+    "team-service": {
+      "aliases": ["ts"],
+      "factory": "./team-service/index#teamService",
+      "description": "Generate a service with a Logger already set up.",
+      "schema": "./team-service/schema.json"
+    }
+  }
 }
