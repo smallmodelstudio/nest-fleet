@@ -1,0 +1,27 @@
+{
+  "name": "@team/health",
+  "version": "0.0.0",
+  "description": "nest add @team/health: installs @nestjs/terminus and wires up a /health endpoint.",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "schematics": "./dist/collection.json",
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json && node ./scripts/copy-assets.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@angular-devkit/core": "^22.1.8",
+    "@angular-devkit/schematics": "^22.1.8",
+    "typescript": "^6.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "24.13.6"
+  }
+}
