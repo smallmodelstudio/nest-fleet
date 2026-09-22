@@ -11,16 +11,21 @@ import {
   type Tree,
   url,
 } from '@angular-devkit/schematics';
-import { relative, resolve as resolvePath } from 'node:path';
+import { readFileSync } from 'node:fs';
+import { join, resolve as resolvePath } from 'node:path';
 
 import { registerInModule } from '../utils/register-in-module';
 import type { Schema } from './schema';
 
-// The package root of @team/schematics itself: dist/application -> dist -> package root.
+// The package root of @smallmodelstudio/schematics itself: dist/application -> dist -> package root.
 const OWN_PACKAGE_ROOT = resolvePath(__dirname, '..', '..');
 
 interface PackageJson {
   devDependencies?: Record<string, string>;
+}
+
+interface OwnPackageJson {
+  version: string;
 }
 
 /**
@@ -52,7 +57,7 @@ export function teamApplication(options: Schema): Rule {
             MergeStrategy.Overwrite,
           ),
           (tree3: Tree) => {
-            linkOwnPackage(tree3, projectPath);
+            linkPublishedPackage(tree3, projectPath);
             return tree3;
           },
         ]);
@@ -62,22 +67,20 @@ export function teamApplication(options: Schema): Rule {
 }
 
 /**
- * @team/schematics isn't published anywhere yet (see PLAN.md open
- * questions), so `nest-cli.json`'s `"collection": "@team/schematics"` is
- * unresolvable by default: every `nest` command loads the generate
- * command's schematics up front, so even `nest build` fails outright
- * without this. We link back to this checkout so the generated project
- * resolves it locally; swap this for a published version once one exists.
+ * `nest-cli.json`'s `"collection": "@smallmodelstudio/schematics"` is
+ * unresolvable unless the generated project depends on it: every `nest`
+ * command loads the generate command's schematics up front, so even
+ * `nest build` fails outright without this. Depend on whatever version of
+ * ourselves is actually running, so this always matches what got published.
  */
-function linkOwnPackage(tree: Tree, projectPath: string): void {
+function linkPublishedPackage(tree: Tree, projectPath: string): void {
   const packageJsonPath = `${projectPath}/package.json`;
   const packageJson = JSON.parse(tree.readText(packageJsonPath)) as PackageJson;
 
+  const ownPackageJson = JSON.parse(readFileSync(join(OWN_PACKAGE_ROOT, 'package.json'), 'utf8')) as OwnPackageJson;
+
   packageJson.devDependencies ??= {};
-  // Tree paths are virtual and always absolute (e.g. "/demo"); strip the
-  // leading slash so it joins onto cwd instead of replacing it.
-  const projectAbsolutePath = resolvePath(process.cwd(), projectPath.replace(/^\//, ''));
-  packageJson.devDependencies['@team/schematics'] = `file:${relative(projectAbsolutePath, OWN_PACKAGE_ROOT)}`;
+  packageJson.devDependencies['@smallmodelstudio/schematics'] = `^${ownPackageJson.version}`;
 
   tree.overwrite(packageJsonPath, `${JSON.stringify(packageJson, null, 2)}\n`);
 }

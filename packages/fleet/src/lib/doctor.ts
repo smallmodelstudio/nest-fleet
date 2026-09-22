@@ -22,18 +22,18 @@ export function diagnose(repoName: string, info: NestProjectInfo, currentVersion
       ok: info.localNestCli,
       detail: info.localNestCli
         ? '@nestjs/cli is a devDependency'
-        : '@nestjs/cli is missing from devDependencies — a global `nest` cannot resolve @team/schematics',
+        : '@nestjs/cli is missing from devDependencies — a global `nest` cannot resolve @smallmodelstudio/schematics',
     },
     {
       name: 'collection',
       severity: 'error',
-      ok: info.collection === '@team/schematics',
+      ok: info.collection === '@smallmodelstudio/schematics',
       detail: info.collection
         ? `nest-cli.json "collection" is "${info.collection}"`
         : 'nest-cli.json has no "collection" set',
     },
     {
-      name: '@team/schematics version',
+      name: '@smallmodelstudio/schematics version',
       severity: 'error',
       ok: isOnVersion(info.teamSchematicsVersion, currentVersion),
       detail: describeVersion(info.teamSchematicsVersion, currentVersion),
@@ -72,7 +72,7 @@ function isOnVersion(declared: string | undefined, current: string): boolean {
 
 function describeVersion(declared: string | undefined, current: string): string {
   if (!declared) {
-    return '@team/schematics is not a dependency';
+    return '@smallmodelstudio/schematics is not a dependency';
   }
   if (isLocalReference(declared)) {
     return `linked locally (${declared})`;

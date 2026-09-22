@@ -1,6 +1,6 @@
 {
   "$comment": "Repos fleet manages. See PLAN.md section 8: real repos still to be decided; sandbox is here so `fleet status`/`fleet doctor` have something to run against locally. `fleet run` needs a repo's own gitUrl (a clone target to branch and push from) — sandbox has none, since it's a workspace member, not its own git repo.",
-  "standardsVersion": "0.0.0",
+  "standardsVersion": "0.1.0",
   "repos": [
     {
       "name": "sandbox",

@@ -7,7 +7,7 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { runSchematic } from './schematic-runner';
 
 // The DevKit resolves collections through node module resolution from `root`, so the fixture
-// gets a symlink to the built @team/schematics package — the same package sandbox links to.
+// gets a symlink to the built @smallmodelstudio/schematics package — the same package sandbox links to.
 const schematicsPackageDir = resolve(__dirname, '../../../schematics');
 
 describe('runSchematic', () => {
@@ -26,7 +26,7 @@ describe('runSchematic', () => {
   it('reports what would change without writing files, in a dry run', async () => {
     const { changes } = await runSchematic({
       root,
-      collectionName: '@team/schematics',
+      collectionName: '@smallmodelstudio/schematics',
       schematicName: 'team-service',
       schematicOptions: { name: 'billing' },
       dryRun: true,
@@ -39,7 +39,7 @@ describe('runSchematic', () => {
   it('writes files for real when not a dry run', async () => {
     const { changes } = await runSchematic({
       root,
-      collectionName: '@team/schematics',
+      collectionName: '@smallmodelstudio/schematics',
       schematicName: 'team-service',
       schematicOptions: { name: 'billing' },
       dryRun: false,
@@ -59,7 +59,7 @@ describe('runSchematic', () => {
 
     const first = await runSchematic({
       root,
-      collectionName: '@team/schematics',
+      collectionName: '@smallmodelstudio/schematics',
       schematicName: 'migrate-to-v2',
       schematicOptions: {},
       dryRun: false,
@@ -68,7 +68,7 @@ describe('runSchematic', () => {
 
     const second = await runSchematic({
       root,
-      collectionName: '@team/schematics',
+      collectionName: '@smallmodelstudio/schematics',
       schematicName: 'migrate-to-v2',
       schematicOptions: {},
       dryRun: false,

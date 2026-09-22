@@ -17,7 +17,7 @@ function configOption(): Option {
 export function buildCli(io: CliIO): Command {
   const program = new Command();
 
-  program.name('fleet').description('Manage every repo on the @team/schematics standard.');
+  program.name('fleet').description('Manage every repo on the @smallmodelstudio/schematics standard.');
 
   program
     .command('status')
@@ -49,7 +49,7 @@ export function buildCli(io: CliIO): Command {
     .addOption(configOption())
     .option('-r, --repo <name>', 'restrict to this repo (repeatable)', collectRepeatable, [] as string[])
     .option('-o, --option <key=value>', 'schematic option (repeatable)', collectRepeatable, [] as string[])
-    .option('--collection <name>', 'collection to run the schematic from', '@team/schematics')
+    .option('--collection <name>', 'collection to run the schematic from', '@smallmodelstudio/schematics')
     .addOption(new Option('--apply', 'push a branch and open a PR instead of a dry run').default(false))
     .action(
       async (

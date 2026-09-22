@@ -7,7 +7,7 @@ import { describe, expect, it } from 'vitest';
 const collectionPath = resolve(__dirname, '../../dist/collection.json');
 
 describe('application', () => {
-  const runner = new SchematicTestRunner('@team/schematics', collectionPath);
+  const runner = new SchematicTestRunner('@smallmodelstudio/schematics', collectionPath);
 
   it('generates the standard Nest project layout', async () => {
     const tree = await runner.runSchematic('application', { name: 'demo' });
@@ -21,7 +21,7 @@ describe('application', () => {
     const tree = await runner.runSchematic('application', { name: 'demo' });
 
     const nestCliJson = JSON.parse(tree.readContent('/demo/nest-cli.json'));
-    expect(nestCliJson.collection).toBe('@team/schematics');
+    expect(nestCliJson.collection).toBe('@smallmodelstudio/schematics');
     expect(nestCliJson.generateOptions.spec).toBe(true);
   });
 
@@ -50,6 +50,6 @@ describe('application', () => {
     expect(tree.files).toContain('/apps/demo/Dockerfile');
 
     const nestCliJson = JSON.parse(tree.readContent('/apps/demo/nest-cli.json'));
-    expect(nestCliJson.collection).toBe('@team/schematics');
+    expect(nestCliJson.collection).toBe('@smallmodelstudio/schematics');
   });
 });

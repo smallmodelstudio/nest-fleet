@@ -5,7 +5,7 @@ import type { NestProjectInfo } from './nest-project';
 
 const compliant: NestProjectInfo = {
   nestVersion: '^12.0.1',
-  collection: '@team/schematics',
+  collection: '@smallmodelstudio/schematics',
   localNestCli: true,
   teamSchematicsVersion: '1.2.0',
   specDefaultsEnforced: true,
@@ -19,7 +19,7 @@ describe('diagnose', () => {
     expect(report.checks.every((check) => check.ok)).toBe(true);
   });
 
-  it('flags a repo without @team/schematics as the collection', () => {
+  it('flags a repo without @smallmodelstudio/schematics as the collection', () => {
     const report = diagnose('billing', { ...compliant, collection: '@nestjs/schematics' }, '1.2.0');
 
     expect(report.ok).toBe(false);
@@ -27,11 +27,11 @@ describe('diagnose', () => {
     expect(check?.ok).toBe(false);
   });
 
-  it('flags a repo on an old @team/schematics version', () => {
+  it('flags a repo on an old @smallmodelstudio/schematics version', () => {
     const report = diagnose('billing', { ...compliant, teamSchematicsVersion: '1.0.0' }, '1.2.0');
 
     expect(report.ok).toBe(false);
-    const check = report.checks.find((c) => c.name === '@team/schematics version');
+    const check = report.checks.find((c) => c.name === '@smallmodelstudio/schematics version');
     expect(check?.ok).toBe(false);
     expect(check?.detail).toContain('1.2.0');
   });
@@ -39,13 +39,13 @@ describe('diagnose', () => {
   it('treats a caret range against the current version as up to date', () => {
     const report = diagnose('billing', { ...compliant, teamSchematicsVersion: '^1.2.0' }, '1.2.0');
 
-    expect(report.checks.find((c) => c.name === '@team/schematics version')?.ok).toBe(true);
+    expect(report.checks.find((c) => c.name === '@smallmodelstudio/schematics version')?.ok).toBe(true);
   });
 
   it('treats a workspace/link dependency as always current', () => {
     const report = diagnose('sandbox', { ...compliant, teamSchematicsVersion: 'link:../schematics' }, '1.2.0');
 
-    expect(report.checks.find((c) => c.name === '@team/schematics version')?.ok).toBe(true);
+    expect(report.checks.find((c) => c.name === '@smallmodelstudio/schematics version')?.ok).toBe(true);
   });
 
   it('treats a file: dependency as always current, as the golden-path app generates', () => {
@@ -55,7 +55,7 @@ describe('diagnose', () => {
       '1.2.0',
     );
 
-    expect(report.checks.find((c) => c.name === '@team/schematics version')?.ok).toBe(true);
+    expect(report.checks.find((c) => c.name === '@smallmodelstudio/schematics version')?.ok).toBe(true);
   });
 
   it('flags a missing local CLI as an error, not just a warning', () => {

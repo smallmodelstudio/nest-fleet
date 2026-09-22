@@ -21,32 +21,32 @@ describe('readNestProject', () => {
     writeFileSync(
       join(dir, 'package.json'),
       JSON.stringify({
-        dependencies: { '@nestjs/core': '^12.0.1', '@team/schematics': '1.2.0' },
+        dependencies: { '@nestjs/core': '^12.0.1', '@smallmodelstudio/schematics': '1.2.0' },
         devDependencies: { '@nestjs/cli': '^12.0.0' },
       }),
     );
     writeFileSync(
       join(dir, 'nest-cli.json'),
-      JSON.stringify({ collection: '@team/schematics', generateOptions: { spec: true } }),
+      JSON.stringify({ collection: '@smallmodelstudio/schematics', generateOptions: { spec: true } }),
     );
 
     const info = readNestProject(dir);
 
     expect(info).toEqual({
       nestVersion: '^12.0.1',
-      collection: '@team/schematics',
+      collection: '@smallmodelstudio/schematics',
       localNestCli: true,
       teamSchematicsVersion: '1.2.0',
       specDefaultsEnforced: true,
     });
   });
 
-  it('reads @team/schematics out of devDependencies, where the golden-path app puts its file: link', () => {
+  it('reads @smallmodelstudio/schematics out of devDependencies, where the golden-path app puts its file: link', () => {
     writeFileSync(
       join(dir, 'package.json'),
       JSON.stringify({
         dependencies: { '@nestjs/core': '^12.0.1' },
-        devDependencies: { '@nestjs/cli': '^12.0.0', '@team/schematics': 'file:../../packages/schematics' },
+        devDependencies: { '@nestjs/cli': '^12.0.0', '@smallmodelstudio/schematics': 'file:../../packages/schematics' },
       }),
     );
 

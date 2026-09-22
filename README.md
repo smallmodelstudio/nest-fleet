@@ -11,10 +11,10 @@ See [PLAN.md](PLAN.md) for the background and the phase-by-phase plan.
 
 | Package                                       | What it is                                                                                          | Used via                          |
 | --------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------- |
-| [`@team/schematics`](packages/schematics)     | A schematics collection that extends `@nestjs/schematics` with house-style generators and migrations | `nest g`, `nest new -c`, `fleet run` |
-| [`@team/health`](packages/health)             | A `nest-add` schematic that wires `@nestjs/terminus` and a `/health` endpoint into an app            | `nest add @team/health`           |
-| [`@team/routes-plugin`](packages/routes-plugin) | A `nest build` compiler plugin that writes `routes.json`, listing every controller route          | `nest-cli.json` `plugins`         |
-| [`@team/fleet`](packages/fleet)               | The `fleet` CLI: `status`, `doctor` and `run` across every repo in `fleet.json`                      | `fleet <command>`                 |
+| [`@smallmodelstudio/schematics`](packages/schematics)     | A schematics collection that extends `@nestjs/schematics` with house-style generators and migrations | `nest g`, `nest new -c`, `fleet run` |
+| [`@smallmodelstudio/health`](packages/health)             | A `nest-add` schematic that wires `@nestjs/terminus` and a `/health` endpoint into an app            | `nest add @smallmodelstudio/health`           |
+| [`@smallmodelstudio/routes-plugin`](packages/routes-plugin) | A `nest build` compiler plugin that writes `routes.json`, listing every controller route          | `nest-cli.json` `plugins`         |
+| [`@smallmodelstudio/fleet`](packages/fleet)               | The `fleet` CLI: `status`, `doctor` and `run` across every repo in `fleet.json`                      | `fleet <command>`                 |
 
 `sandbox/` is a throwaway Nest app for trying things out. It is gitignored,
 but it is a pnpm workspace member, so it uses the local packages through
@@ -74,7 +74,7 @@ resolved relative to the config file, not to the current directory.
 
 | Field              | Required                   | Meaning                                                                                                   |
 | ------------------ | -------------------------- | --------------------------------------------------------------------------------------------------------- |
-| `standardsVersion` | yes                        | The `@team/schematics` version every repo should be on. `fleet doctor` compares against it.               |
+| `standardsVersion` | yes                        | The `@smallmodelstudio/schematics` version every repo should be on. `fleet doctor` compares against it.               |
 | `repos[].name`     | yes                        | A label, and the value `fleet run --repo` matches against.                                                |
 | `repos[].path`     | one of `path` or `gitUrl`  | A local checkout. `status` and `doctor` read it in place. `run` clones from it when there is no `gitUrl`. |
 | `repos[].gitUrl`   | one of `path` or `gitUrl`  | The remote. `status` needs it for the CI column, and `run --apply` needs it to push and open a PR.        |
@@ -92,7 +92,7 @@ its last CI run.
 $ fleet status
 REPO     NEST     COLLECTION        LAST CI
 -------  -------  ----------------  -----------------
-sandbox  ^12.0.1  @team/schematics  local (no remote)
+sandbox  ^12.0.1  @smallmodelstudio/schematics  local (no remote)
 ```
 
 - **NEST** is the `@nestjs/core` range in `dependencies`.
@@ -115,16 +115,16 @@ sandbox  OK      spec defaults
 $ fleet doctor --verbose     # also lists every check with its detail
 sandbox:
   [ok] local nest CLI — @nestjs/cli is a devDependency
-  [ok] collection — nest-cli.json "collection" is "@team/schematics"
-  [ok] @team/schematics version — linked locally (link:../packages/schematics)
+  [ok] collection — nest-cli.json "collection" is "@smallmodelstudio/schematics"
+  [ok] @smallmodelstudio/schematics version — linked locally (link:../packages/schematics)
   [warn] spec defaults — nest-cli.json "generateOptions.spec" is not set to true
 ```
 
 | Check                      | Severity | Passes when                                                                                                 |
 | -------------------------- | -------- | ----------------------------------------------------------------------------------------------------------- |
-| `local nest CLI`           | error    | `@nestjs/cli` is in `devDependencies`. A global `nest` cannot resolve `@team/schematics`.                  |
-| `collection`               | error    | `nest-cli.json` has `"collection": "@team/schematics"`                                                      |
-| `@team/schematics version` | error    | `dependencies["@team/schematics"]` equals `standardsVersion` (a leading `^` or `~` is ignored), or is a `link:` or `workspace:` dependency |
+| `local nest CLI`           | error    | `@nestjs/cli` is in `devDependencies`. A global `nest` cannot resolve `@smallmodelstudio/schematics`.                  |
+| `collection`               | error    | `nest-cli.json` has `"collection": "@smallmodelstudio/schematics"`                                                      |
+| `@smallmodelstudio/schematics version` | error    | `dependencies["@smallmodelstudio/schematics"]` equals `standardsVersion` (a leading `^` or `~` is ignored), or is a `link:` or `workspace:` dependency |
 | `spec defaults`            | warn     | `nest-cli.json` has `"generateOptions": { "spec": true }`                                                   |
 
 A repo is `DRIFT` if any **error** check fails. Warnings are listed but
@@ -151,7 +151,7 @@ fleet run migrate-to-v2 --apply
 | --------------------------- | ---------------------------------------------------------------------------------- |
 | `-r, --repo <name>`         | Only run in this repo. Repeat it for more than one. Defaults to every repo.        |
 | `-o, --option <key=value>`  | Pass an option to the schematic. Repeatable. Values are passed as strings.         |
-| `--collection <name>`       | The collection to take the schematic from. Defaults to `@team/schematics`.          |
+| `--collection <name>`       | The collection to take the schematic from. Defaults to `@smallmodelstudio/schematics`.          |
 | `--apply`                   | Push a branch and open a PR, instead of doing a dry run                             |
 | `-c, --config <path>`       | The `fleet.json` to read                                                            |
 
@@ -163,7 +163,7 @@ For each repo it:
 3. Installs dependencies: `pnpm install --frozen-lockfile` if there is a
    `pnpm-lock.yaml`, otherwise `npm ci`, or `npm install` when there is no
    lockfile. The collection has to be resolvable from the repo's own
-   `node_modules`, so `@team/schematics` must be one of its dependencies.
+   `node_modules`, so `@smallmodelstudio/schematics` must be one of its dependencies.
 4. Runs the schematic through the Angular DevKit's `NodeWorkflow`.
 5. With `--apply` only: if the schematic changed nothing it stops with
    `no-changes`. Otherwise it runs the repo's `test` script, and if the tests
@@ -193,15 +193,15 @@ what is committed, so uncommitted work in that checkout is not included.
 Always use the **project-local** Nest CLI (`npx nest`, or the `nest` in a
 package script). A globally installed `nest` resolves collections from its
 own install location and fails with
-`Collection "@team/schematics" cannot be resolved`.
+`Collection "@smallmodelstudio/schematics" cannot be resolved`.
 
 ### Using the collection in an existing app
 
-Add `@team/schematics` as a dependency, then set it as the default in
+Add `@smallmodelstudio/schematics` as a dependency, then set it as the default in
 `nest-cli.json`:
 
 ```json
-{ "collection": "@team/schematics", "generateOptions": { "spec": true } }
+{ "collection": "@smallmodelstudio/schematics", "generateOptions": { "spec": true } }
 ```
 
 Every Nest built-in (`module`, `resource`, `guard` and the rest) still works,
@@ -218,46 +218,81 @@ Add `--dry-run` to any of these to preview the changes without writing them.
 
 ### Starting a new service: `nest new`
 
-The `nest` binary has to be one that can resolve `@team/schematics`. Until the
-package is published, use the one installed in `sandbox/`, and run it from the
-directory where the new project should go:
+`@smallmodelstudio/schematics` is published to GitHub Packages (see
+[Publishing](#publishing-smallmodelstudioschematics) below), so `nest new`
+can resolve it without a local checkout of this repo. You need a
+`read:packages` token in your `~/.npmrc` first — see that section for how
+to get one — then:
 
 ```sh
 cd ~/code
-~/nest-fleet/sandbox/node_modules/.bin/nest new billing -c @team/schematics -p npm
+npx -p @nestjs/cli -p @smallmodelstudio/schematics nest new billing -c @smallmodelstudio/schematics -p npm
 ```
 
 This produces Nest's standard app plus a `Dockerfile`, a GitHub Actions
-workflow (lint, build, test), a `/health` endpoint, and a `nest-cli.json` with
-the collection and spec defaults already set. Don't use `--directory` with an
+workflow (lint, build, test), a `/health` endpoint, a `.npmrc` scoping
+`@smallmodelstudio` to GitHub Packages, and a `nest-cli.json` with the
+collection and spec defaults already set. Don't use `--directory` with an
 absolute path: in testing, it wrote nothing.
 
-The generated `package.json` points `@team/schematics` at this checkout with a
-`file:` path. That is needed until the package is published, and it means the
-generated CI workflow and Docker build will fail anywhere this checkout isn't
-present at that path.
+The generated `package.json` depends on whatever version of
+`@smallmodelstudio/schematics` scaffolded it (a `^` range, not a `file:`
+path), so the app builds the same anywhere — including CI and Docker — as
+long as that environment can also authenticate to GitHub Packages. The
+generated `.github/workflows/ci.yml` needs a `GH_PACKAGES_TOKEN` repo secret
+(a PAT with `read:packages`) added before it will pass; `docker build` needs
+the token passed as a `--secret` (see the comment in the generated
+`Dockerfile`).
 
-### Adding capabilities: `nest add @team/health`
+### Publishing `@smallmodelstudio/schematics`
+
+Published to GitHub Packages, under the `smallmodelstudio` GitHub org/user
+that owns this repo (a registry other than npmjs.org, so scoped installs and
+publishes both need a token — see below).
+
+To cut a new release:
 
 ```sh
-npx nest add @team/health
+# bump packages/schematics/package.json's "version" first
+pnpm --filter=./packages/schematics run build
+cd packages/schematics && npm publish
+```
+
+`npm publish` reads the registry from `publishConfig.registry` in
+`packages/schematics/package.json`, so it goes to GitHub Packages without
+`--registry` on the command line. You need a token with `write:packages` (and
+`read:packages`) in your **global** `~/.npmrc` (not this repo's — never
+commit a token):
+
+```
+//npm.pkg.github.com/:_authToken=<your PAT>
+```
+
+Create the PAT at github.com/settings/tokens (a classic token; add `repo`
+too if this repository is private). Check it's picked up with
+`npm whoami --registry=https://npm.pkg.github.com` before publishing.
+
+### Adding capabilities: `nest add @smallmodelstudio/health`
+
+```sh
+npx nest add @smallmodelstudio/health
 ```
 
 This adds `@nestjs/terminus`, generates `src/health/health.module.ts` and a
 controller, imports `HealthModule` into `AppModule`, and installs the new
-dependency. `nest add` installs from a registry, so until `@team/health` is
+dependency. `nest add` installs from a registry, so until `@smallmodelstudio/health` is
 published, try it out with a local registry such as Verdaccio.
 
-Don't run it on an app made with `nest new -c @team/schematics`. That app
+Don't run it on an app made with `nest new -c @smallmodelstudio/schematics`. That app
 already has its own `HealthController`, and the two would clash.
 
-## Route inventory: `@team/routes-plugin`
+## Route inventory: `@smallmodelstudio/routes-plugin`
 
 Add the plugin to `nest-cli.json`, and `nest build` writes `routes.json` in the
 directory you ran it from:
 
 ```json
-{ "compilerOptions": { "plugins": ["@team/routes-plugin"] } }
+{ "compilerOptions": { "plugins": ["@smallmodelstudio/routes-plugin"] } }
 ```
 
 ```json
@@ -265,7 +300,7 @@ directory you ran it from:
 ```
 
 To write it somewhere else, pass
-`{ "name": "@team/routes-plugin", "options": { "outputFile": "dist/routes.json" } }`.
+`{ "name": "@smallmodelstudio/routes-plugin", "options": { "outputFile": "dist/routes.json" } }`.
 The plugin only runs with the default `tsc` builder, not with SWC. It reads
 string or `{ path }` arguments to `@Controller` and the HTTP-method
 decorators. Array paths, a global prefix and versioning are not included in
@@ -278,10 +313,10 @@ nest-fleet/
 ├── PLAN.md                 background, findings and phases
 ├── fleet.json              the repos fleet manages
 ├── packages/
-│   ├── schematics/         @team/schematics
-│   ├── health/             @team/health
-│   ├── routes-plugin/      @team/routes-plugin
-│   └── fleet/              @team/fleet
+│   ├── schematics/         @smallmodelstudio/schematics
+│   ├── health/             @smallmodelstudio/health
+│   ├── routes-plugin/      @smallmodelstudio/routes-plugin
+│   └── fleet/              @smallmodelstudio/fleet
 └── sandbox/                throwaway Nest app (gitignored)
 ```
 

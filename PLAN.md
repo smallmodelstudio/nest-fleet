@@ -53,7 +53,7 @@ before writing this plan:
   because the rule took precedence over the flag.
 - **Use the project-local CLI.** The CLI resolves a custom collection from its
   own install location, not the project's. A globally installed `nest`
-  failed with `Collection "@team/schematics" cannot be resolved`. `npx nest`
+  failed with `Collection "@smallmodelstudio/schematics" cannot be resolved`. `npx nest`
   (CLI installed as a dev dependency) worked. The global CLI here is 11.0.24;
   the local one is 12.0.3.
 - **Use `applyTemplates()`, not `template()`.** `template()` left the
@@ -71,8 +71,8 @@ What this could grow into, roughly in order of value to a lead:
 | Idea                             | What the team gets                                                                                  | Built with                           |
 | -------------------------------- | --------------------------------------------------------------------------------------------------- | ------------------------------------ |
 | House-style generators           | `nest g resource` produces our layering, DTO style, logger and specs                                | Override schematics (lever 2)        |
-| Golden-path new service          | `nest new -c @team/schematics` gives lint, tsconfig, Docker, CI and health from day one             | `application` schematic (lever 3)    |
-| Capability packages              | `nest add @team/health` installs and registers it in `AppModule`                                    | `nest-add` schematics (lever 4)      |
+| Golden-path new service          | `nest new -c @smallmodelstudio/schematics` gives lint, tsconfig, Docker, CI and health from day one             | `application` schematic (lever 3)    |
+| Capability packages              | `nest add @smallmodelstudio/health` installs and registers it in `AppModule`                                    | `nest-add` schematics (lever 4)      |
 | Shared config presets            | One ESLint, Prettier and tsconfig package that every repo extends                                  | npm packages                         |
 | Migrations                       | "We now use pino": a schematic that rewrites imports and config, run in each repo                  | Schematics plus AST edits            |
 | Fleet manifest and drift check   | `fleet doctor` reports which repos are on old Nest versions, missing specs or off-standard config  | Own CLI plus `fleet.json`            |
@@ -89,9 +89,9 @@ Vitest):
 nest-fleet/
 ├── PLAN.md
 ├── packages/
-│   ├── schematics/      @team/schematics: the collection (phases 1–5)
-│   ├── config/          @team/config: eslint, prettier and tsconfig presets
-│   └── fleet/           @team/fleet: our own CLI (phase 6)
+│   ├── schematics/      @smallmodelstudio/schematics: the collection (phases 1–5)
+│   ├── config/          @smallmodelstudio/config: eslint, prettier and tsconfig presets
+│   └── fleet/           @smallmodelstudio/fleet: our own CLI (phase 6)
 ├── sandbox/             throwaway Nest app to try things in (gitignored)
 └── fleet.json           the repos we manage (phase 6)
 ```
@@ -113,11 +113,11 @@ that can be run.
 - A build step that compiles TypeScript and copies `collection.json`, the
   `schema.json` files and `files/` templates into `dist/`.
 - `sandbox/`: `nest new sandbox --skip-git`, then add the collection as a
-  `link:` dependency and set `"collection": "@team/schematics"` in its
+  `link:` dependency and set `"collection": "@smallmodelstudio/schematics"` in its
   `nest-cli.json`.
 
 **Done when** `npx nest g --help` in `sandbox/` lists "Schematics available on
-@team/schematics collection".
+@smallmodelstudio/schematics collection".
 
 **You learn:** how the CLI finds a collection, and what `extends` does.
 
@@ -177,10 +177,10 @@ proves it.
 
 - Add an `application` schematic: extend Nest's, then add our config presets,
   `Dockerfile`, CI workflow, `/health` endpoint and `nest-cli.json` with
-  `"collection": "@team/schematics"` already set.
+  `"collection": "@smallmodelstudio/schematics"` already set.
 - Work out how to run it: `nest new` uses the global CLI, which cannot see our
   collection (see findings). Try
-  `npx -p @nestjs/cli -p @team/schematics nest new demo -c @team/schematics`,
+  `npx -p @nestjs/cli -p @smallmodelstudio/schematics nest new demo -c @smallmodelstudio/schematics`,
   and fall back to a `fleet new` command in phase 6 if needed.
 
 **Done when** one command creates a service that passes lint, build and tests
@@ -188,12 +188,12 @@ without edits.
 
 ### Phase 4: `nest add` capabilities
 
-- Create `@team/health` with a `nest-add` schematic that installs
+- Create `@smallmodelstudio/health` with a `nest-add` schematic that installs
   `@nestjs/terminus`, adds a `HealthModule` and imports it into `AppModule`.
 - Test locally with `npm pack`, or a local registry (Verdaccio), since
   `nest add` installs from a registry.
 
-**Done when** `npx nest add @team/health` in a fresh sandbox gives a working
+**Done when** `npx nest add @smallmodelstudio/health` in a fresh sandbox gives a working
 `/health`.
 
 ### Phase 5: Migrations
@@ -233,15 +233,16 @@ route, as a first look at TypeScript transformers.
 `~/nest-kit` builds its own `nest-kit` binary with commander (roadmap phase 4:
 `new service`, `generate resource`). This project instead extends the official
 `nest` CLI, so the team keeps using commands they already know. Later, the two
-could meet: `@team/schematics` could generate `nest-kit` contracts and
+could meet: `@smallmodelstudio/schematics` could generate `nest-kit` contracts and
 resources, or `fleet` could manage `nest-kit` services. That decision can wait
 until phase 3.
 
 ## 8. Open questions
 
 - Which repos go into `fleet.json` first?
-- Where will packages be published: GitHub Packages, a private npm scope, or
-  git dependencies?
+- `@smallmodelstudio/schematics` now publishes to GitHub Packages (see the
+  README's Publishing section). `health`, `routes-plugin` and `fleet` are
+  still unpublished — same question applies to them.
 - Is the team on npm or pnpm? That affects `nest new` and `nest add`.
 - Should the global CLI be upgraded from 11 to 12, or should every doc say
   `npx nest`?

@@ -23,7 +23,7 @@ interface PackageJson {
 }
 
 /**
- * `nest add @team/health`: adds `@nestjs/terminus` as a dependency,
+ * `nest add @smallmodelstudio/health`: adds `@nestjs/terminus` as a dependency,
  * generates a HealthModule with a /health endpoint, registers it in
  * AppModule, and installs the new dependency.
  */

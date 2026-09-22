@@ -1,8 +1,15 @@
 {
-  "name": "@team/schematics",
-  "version": "0.0.0",
+  "name": "@smallmodelstudio/schematics",
+  "version": "0.1.0",
   "description": "House-style schematics collection for nest g and nest new.",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/smallmodelstudio/nest-fleet.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "schematics": "./dist/collection.json",

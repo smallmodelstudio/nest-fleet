@@ -1,7 +1,7 @@
 {
-  "name": "@team/health",
+  "name": "@smallmodelstudio/health",
   "version": "0.0.0",
-  "description": "nest add @team/health: installs @nestjs/terminus and wires up a /health endpoint.",
+  "description": "nest add @smallmodelstudio/health: installs @nestjs/terminus and wires up a /health endpoint.",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

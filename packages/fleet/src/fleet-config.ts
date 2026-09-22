@@ -17,7 +17,7 @@ export interface ResolvedFleetRepo extends FleetRepoConfig {
 }
 
 export interface FleetConfig {
-  /** The @team/schematics version every repo is expected to be on. */
+  /** The @smallmodelstudio/schematics version every repo is expected to be on. */
   standardsVersion: string;
   repos: ResolvedFleetRepo[];
 }

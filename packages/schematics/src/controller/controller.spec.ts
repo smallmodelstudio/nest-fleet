@@ -7,7 +7,7 @@ import { describe, expect, it } from 'vitest';
 const collectionPath = resolve(__dirname, '../../dist/collection.json');
 
 describe('controller', () => {
-  const runner = new SchematicTestRunner('@team/schematics', collectionPath);
+  const runner = new SchematicTestRunner('@smallmodelstudio/schematics', collectionPath);
 
   it('still generates a spec when --no-spec is passed (team rule beats the flag)', async () => {
     const tree = await runner.runSchematic('controller', { name: 'users', spec: false });

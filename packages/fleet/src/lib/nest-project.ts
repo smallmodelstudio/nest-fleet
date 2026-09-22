@@ -28,10 +28,10 @@ export function readNestProject(dir: string): NestProjectInfo {
     nestVersion: packageJson?.dependencies?.['@nestjs/core'],
     collection: nestCliJson?.collection,
     localNestCli: Boolean(packageJson?.devDependencies?.['@nestjs/cli']),
-    // The `application` schematic puts @team/schematics in devDependencies (a `file:` link back
+    // The `application` schematic puts @smallmodelstudio/schematics in devDependencies (a `file:` link back
     // to this checkout, since it isn't published yet), so check both.
     teamSchematicsVersion:
-      packageJson?.dependencies?.['@team/schematics'] ?? packageJson?.devDependencies?.['@team/schematics'],
+      packageJson?.dependencies?.['@smallmodelstudio/schematics'] ?? packageJson?.devDependencies?.['@smallmodelstudio/schematics'],
     specDefaultsEnforced: nestCliJson?.generateOptions?.spec === true,
   };
 }

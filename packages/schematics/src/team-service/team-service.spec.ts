@@ -7,7 +7,7 @@ import { describe, expect, it } from 'vitest';
 const collectionPath = resolve(__dirname, '../../dist/collection.json');
 
 describe('team-service', () => {
-  const runner = new SchematicTestRunner('@team/schematics', collectionPath);
+  const runner = new SchematicTestRunner('@smallmodelstudio/schematics', collectionPath);
 
   it('creates the service in a dasherized folder under src by default', async () => {
     const tree = await runner.runSchematic('team-service', { name: 'billing' });
@@ -46,7 +46,7 @@ describe('team-service', () => {
   });
 
   it('still exposes Nest built-ins through extends', () => {
-    expect(runner.engine.createCollection('@team/schematics').description.extends).toEqual([
+    expect(runner.engine.createCollection('@smallmodelstudio/schematics').description.extends).toEqual([
       '@nestjs/schematics',
     ]);
   });

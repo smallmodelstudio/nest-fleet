@@ -8,7 +8,7 @@ import { describe, expect, it } from 'vitest';
 const collectionPath = resolve(__dirname, '../../dist/collection.json');
 
 describe('migrate-to-v2', () => {
-  const runner = new SchematicTestRunner('@team/schematics', collectionPath);
+  const runner = new SchematicTestRunner('@smallmodelstudio/schematics', collectionPath);
 
   function treeWith(files: Record<string, string>): Tree {
     const tree = new EmptyTree();

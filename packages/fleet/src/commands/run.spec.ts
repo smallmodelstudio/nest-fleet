@@ -31,10 +31,10 @@ describe('runCommand', () => {
         version: '0.0.1',
         private: true,
         scripts: { test: 'node -e "process.exit(0)"' },
-        dependencies: { '@team/schematics': `file:${schematicsPackageDir}` },
+        dependencies: { '@smallmodelstudio/schematics': `file:${schematicsPackageDir}` },
       }),
     );
-    writeFileSync(join(sourceDir, 'nest-cli.json'), JSON.stringify({ collection: '@team/schematics' }));
+    writeFileSync(join(sourceDir, 'nest-cli.json'), JSON.stringify({ collection: '@smallmodelstudio/schematics' }));
     writeFileSync(join(sourceDir, 'src/app.module.ts'), 'export class AppModule {}\n');
 
     await gitRun('git', ['init', '--quiet', '-b', 'main'], { cwd: sourceDir });

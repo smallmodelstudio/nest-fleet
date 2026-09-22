@@ -21,7 +21,7 @@ describe('nest-add', () => {
   let runner: SchematicTestRunner;
 
   beforeEach(() => {
-    runner = new SchematicTestRunner('@team/health', collectionPath);
+    runner = new SchematicTestRunner('@smallmodelstudio/health', collectionPath);
   });
 
   it('generates a HealthModule and controller under src/health', async () => {

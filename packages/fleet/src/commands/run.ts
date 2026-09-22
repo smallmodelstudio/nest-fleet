@@ -75,7 +75,7 @@ async function runOnRepo(repo: ResolvedFleetRepo, options: RunOptions): Promise<
 
     const { changes } = await runSchematic({
       root: workDir,
-      collectionName: options.collectionName ?? '@team/schematics',
+      collectionName: options.collectionName ?? '@smallmodelstudio/schematics',
       schematicName: options.schematic,
       schematicOptions: options.schematicOptions,
       dryRun: !options.apply,
